@@ -74,7 +74,7 @@ echo "ℹ︎ ASSETS_DIR is $ASSETS_DIR"
 if [ -f "$GITHUB_WORKSPACE/package.json" ]; then
 	if ! [ -d "$GITHUB_WORKSPACE/node_modules" ]; then
 		echo "Install Node Modules"
-		npm install --no-fund
+		npm install --no-fund --silent
 	fi
 	echo "Run Build process"
 	npm run build
@@ -99,6 +99,9 @@ svn checkout --depth immediates "$SVN_URL" "$SVN_DIR"
 cd "$SVN_DIR"
 svn update --set-depth infinity assets
 svn update --set-depth infinity trunk
+
+# maybe handle current version
+svn update --set-depth infinity "tags/$VERSION"
 
 echo "➤ Copying files..."
 if [[ -e "$GITHUB_WORKSPACE/.distignore" ]]; then
@@ -145,18 +148,26 @@ fi
 if [[ -d "$GITHUB_WORKSPACE/$ASSETS_DIR/" ]]; then
 
 	echo "➤ Preparing assets..."
-	if [[ $(svn status "${GITHUB_WORKSPACE}/${ASSETS_DIR}/banner.png") ]]; then
+
+	if ! [[ -f "$SVN_DIR/assets/banner.png" ]] || [[ $(diff -u "$SVN_DIR/assets/banner.png" "${GITHUB_WORKSPACE}/${ASSETS_DIR}/banner.png") ]]; then	
 		convert -resize 1544x500 $GITHUB_WORKSPACE/$ASSETS_DIR/banner.png $GITHUB_WORKSPACE/$ASSETS_DIR/banner-1544x500.png
 		convert -resize 772x250 $GITHUB_WORKSPACE/$ASSETS_DIR/banner.png $GITHUB_WORKSPACE/$ASSETS_DIR/banner-772x250.png
 	fi
-	if [[ $(svn status "${GITHUB_WORKSPACE}/${ASSETS_DIR}/icon.png") ]]; then
+	if ! [[ -f "$SVN_DIR/assets/icon.png" ]] || [[ $(diff -u "$SVN_DIR/assets/icon.png" "${GITHUB_WORKSPACE}/${ASSETS_DIR}/icon.png") ]]; then		
 		convert -resize 256x256 $GITHUB_WORKSPACE/$ASSETS_DIR/icon.png $GITHUB_WORKSPACE/$ASSETS_DIR/icon-256x256.png
 		convert -resize 128x128 $GITHUB_WORKSPACE/$ASSETS_DIR/icon.png $GITHUB_WORKSPACE/$ASSETS_DIR/icon-128x128.png
 	fi
 
-	rsync -rc "$GITHUB_WORKSPACE/$ASSETS_DIR/" assets/ --delete
+	rsync -rc "$GITHUB_WORKSPACE/$ASSETS_DIR/" assets/
+
 else
 	echo "ℹ︎ No assets directory found; skipping asset copy"
+fi
+
+
+# remove the current version from tags if exists
+if [ -d "tags/$VERSION" ]; then
+	rm -rf tags/$VERSION
 fi
 
 # Add everything and commit to SVN
@@ -189,6 +200,7 @@ if test -d "$SVN_DIR/assets" && test -n "$(find "$SVN_DIR/assets" -maxdepth 1 -n
     svn propset svn:mime-type "image/svg+xml" "$SVN_DIR/assets/*.svg" || true
 fi
 
+svn update
 svn status
 
 echo "➤ Committing files..."
