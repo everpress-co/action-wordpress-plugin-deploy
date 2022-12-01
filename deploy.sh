@@ -89,6 +89,8 @@ if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
 	composer update --no-dev
 fi
 
+ls -a
+
 SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
 SVN_DIR="${HOME}/svn-${SLUG}"
 
