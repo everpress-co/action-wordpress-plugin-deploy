@@ -150,7 +150,7 @@ else
 	rsync -rc "$TMP_DIR/" trunk/ --delete --delete-excluded
 
 	echo "WHATS INSIDE?"
-	cd trunk
+	cd "$TMP_DIR"
 	ls -a
 	cd "$SVN_DIR"
 
