@@ -203,6 +203,12 @@ fi
 svn update
 svn status
 
+
+echo "➤ BREAK HERE..."
+echo "X $INPUT_PUSH_TO_REPO"
+
+exit 1
+
 if $INPUT_PUSH_TO_REPO; then
 	echo "➤ Committing files..."
 	svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
