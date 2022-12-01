@@ -136,18 +136,10 @@ else
 	# This will exclude everything in the .gitattributes file with the export-ignore flag
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
-	echo "ℹ︎ git status"
-	git status
-
 	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "ℹ︎ include vendor"
 		git add vendor -f
 	fi
-
-	echo "ℹ︎ git status"
-	git status
-	ls -a
-
 
 	cd "$SVN_DIR"
 
