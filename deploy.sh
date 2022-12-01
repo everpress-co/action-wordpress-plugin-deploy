@@ -123,6 +123,7 @@ else
 		cat > "$GITHUB_WORKSPACE/.gitattributes" <<-EOL
 		/$ASSETS_DIR export-ignore
 		/.gitattributes export-ignore
+		/.gitignore export-ignore
 		/.github export-ignore
 		EOL
 
@@ -140,8 +141,9 @@ else
 		git add vendor -f
 	fi
 
+	echo "WHATS INSIDE gitattributes?"
+	cat .gitattributes
 	cd "$SVN_DIR"
-
 
 	# Copy from clean copy to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
