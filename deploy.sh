@@ -34,6 +34,13 @@ if [[ -z "$SLUG" ]]; then
 fi
 echo "ℹ︎ SLUG is $SLUG"
 
+INPUT_PUSH_TO_REPO=true;
+if [ $INPUT_PUSH_TO_REPO ]; then
+	echo "➤ PUSH_TO_REPO: TRUE"
+else
+	echo "➤ PUSH_TO_REPO: FALSE"
+fi
+
 
 MAINFILE="$SLUG.php"
 
@@ -133,15 +140,23 @@ else
 		git add .gitattributes && git commit -m "Add .gitattributes file"
 	fi
 
+	# vendor folder should always be included
+	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
+		echo "ℹ︎ include vendor"
+		git add vendor -f
+		git commit -m "Add vendor folder"
+	fi
+
 	# This will exclude everything in the .gitattributes file with the export-ignore flag
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
-	cd "$SVN_DIR"
 
+	cd "$SVN_DIR"
 
 	# Copy from clean copy to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
 	rsync -rc "$TMP_DIR/" trunk/ --delete --delete-excluded
+
 fi
 
 # Copy dotorg assets to /assets
@@ -203,16 +218,20 @@ fi
 svn update
 svn status
 
-echo "➤ Committing files..."
-svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
-
-echo "DONE!"
+if [ $INPUT_PUSH_TO_REPO ]; then
+	echo "➤ Committing files..."
+	svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+else
+	echo "ℹ︎ Do not push"
+	exit 1
+fi
 
 if $INPUT_GENERATE_ZIP; then
   echo "Generating zip file..."
   cd "$SVN_DIR/trunk" || exit
   zip -r "${GITHUB_WORKSPACE}/${SLUG}.zip" .
-  echo "::set-output name=zip-path::${GITHUB_WORKSPACE}/${SLUG}.zip"
+  #echo "::set-output name=zip-path::${GITHUB_WORKSPACE}/${SLUG}.zip"
+  echo "zip-path=${GITHUB_WORKSPACE}/${SLUG}.zip" >> $GITHUB_OUTPUT
   echo "✓ Zip file generated!"
 fi
 
