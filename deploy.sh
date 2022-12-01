@@ -147,6 +147,9 @@ else
 	# Copy from clean copy to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
 	rsync -rc "$TMP_DIR/" trunk/ --delete --delete-excluded
+
+	echo "WHATS INSIDE?"
+	ls -a
 fi
 
 # Copy dotorg assets to /assets
@@ -213,7 +216,7 @@ echo "➤ BREAK HERE..."
 echo "X $INPUT_PUSH_TO_REPO"
 
 
-if $INPUT_PUSH_TO_REPO; then
+if [ $INPUT_PUSH_TO_REPO ]; then
 	echo "➤ Committing files..."
 	#svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
 else
