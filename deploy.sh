@@ -83,10 +83,10 @@ fi
 if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
 	if ! [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "Install Composer packages"
-		composer install --no-dev --quiet
+		composer install --no-dev
 	fi
 	echo "Run Composer Update"
-	composer update --no-dev --quiet
+	composer update --no-dev
 fi
 
 SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
@@ -137,7 +137,7 @@ else
 		echo "ℹ︎ include vendor"
 		git add vendor -f
 	fi
-	
+
 	# This will exclude everything in the .gitattributes file with the export-ignore flag
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
