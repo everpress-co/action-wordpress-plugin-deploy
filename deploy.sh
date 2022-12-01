@@ -80,14 +80,14 @@ if [ -f "$GITHUB_WORKSPACE/package.json" ]; then
 	npm run build
 fi
 
-# if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
-# 	if ! [ -d "$GITHUB_WORKSPACE/vendor" ]; then
-# 		echo "Install Composer packages"
-# 		composer install --no-dev --quiet
-# 	fi
-# 	echo "Run Composer Update"
-# 	composer update --no-dev --quiet
-# fi
+if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
+	if ! [ -d "$GITHUB_WORKSPACE/vendor" ]; then
+		echo "Install Composer packages"
+		composer install --no-dev --quiet
+	fi
+	echo "Run Composer Update"
+	composer update --no-dev --quiet
+fi
 
 SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
 SVN_DIR="${HOME}/svn-${SLUG}"
