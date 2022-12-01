@@ -137,6 +137,7 @@ else
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
 	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
+		echo "ℹ︎ include vendor"
 		git add vendor -f
 	fi
 
