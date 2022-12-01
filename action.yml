@@ -8,9 +8,6 @@ inputs:
   generate-zip:
     description: 'Generate package zip file?'
     default: false
-  push-to-repo:
-    description: 'Really push to repo or just display the commit?'
-    default: true
 outputs:
   zip-path:
     description: 'Path to zip file'

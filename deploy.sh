@@ -34,6 +34,7 @@ if [[ -z "$SLUG" ]]; then
 fi
 echo "ℹ︎ SLUG is $SLUG"
 
+INPUT_PUSH_TO_REPO=true;
 if [ $INPUT_PUSH_TO_REPO ]; then
 	echo "➤ PUSH_TO_REPO: TRUE"
 else
