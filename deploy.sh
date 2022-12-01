@@ -223,8 +223,6 @@ else
 	exit 1
 fi
 
-echo "DONE!"
-	exit 1
 
 if $INPUT_GENERATE_ZIP; then
   echo "Generating zip file..."
