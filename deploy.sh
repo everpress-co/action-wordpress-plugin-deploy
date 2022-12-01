@@ -34,6 +34,12 @@ if [[ -z "$SLUG" ]]; then
 fi
 echo "ℹ︎ SLUG is $SLUG"
 
+if [ $INPUT_PUSH_TO_REPO ]; then
+	echo "➤ PUSH_TO_REPO: TRUE"
+else
+	echo "➤ PUSH_TO_REPO: FALSE"
+fi
+
 
 MAINFILE="$SLUG.php"
 
