@@ -123,7 +123,6 @@ else
 		cat > "$GITHUB_WORKSPACE/.gitattributes" <<-EOL
 		/$ASSETS_DIR export-ignore
 		/.gitattributes export-ignore
-		/.gitignore export-ignore
 		/.github export-ignore
 		EOL
 
