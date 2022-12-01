@@ -27,9 +27,6 @@ if [[ -z "$SVN_PASSWORD" ]]; then
 	echo "Set the SVN_PASSWORD secret"
 	exit 1
 fi
-if [[ -z "$INPUT_PUSH_TO_REPO" ]]; then
-	INPUT_PUSH_TO_REPO=true
-fi
 
 # Allow some ENV variables to be customized
 if [[ -z "$SLUG" ]]; then
