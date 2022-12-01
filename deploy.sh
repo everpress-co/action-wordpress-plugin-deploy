@@ -83,10 +83,10 @@ fi
 if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
 	if ! [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "Install Composer packages"
-		composer install --no-dev
+		composer install --no-dev --quiet
 	fi
 	echo "Run Composer Update"
-	composer update --no-dev
+	composer update --no-dev --quiet
 fi
 
 SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
@@ -143,18 +143,11 @@ else
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
 
-	echo "WHATS INSIDE gitattributes?"
-	cat .gitattributes
 	cd "$SVN_DIR"
 
 	# Copy from clean copy to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
 	rsync -rc "$TMP_DIR/" trunk/ --delete --delete-excluded
-
-	echo "WHATS INSIDE?"
-	cd "$TMP_DIR"
-	ls -a
-	cd "$SVN_DIR"
 
 fi
 
