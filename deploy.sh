@@ -94,6 +94,9 @@ if [ -f "$GITHUB_WORKSPACE/composer.json" ]; then
 	fi
 	echo "Run Composer Update"
 	composer update --no-dev --quiet
+
+	rm -rf $GITHUB_WORKSPACE/composer.json
+	rm -rf $GITHUB_WORKSPACE/composer.lock
 fi
 
 SVN_URL="https://plugins.svn.wordpress.org/${SLUG}/"
