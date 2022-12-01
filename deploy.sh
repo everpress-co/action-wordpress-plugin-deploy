@@ -27,6 +27,9 @@ if [[ -z "$SVN_PASSWORD" ]]; then
 	echo "Set the SVN_PASSWORD secret"
 	exit 1
 fi
+if [[ -z "$INPUT_PUSH_TO_REPO" ]]; then
+	INPUT_PUSH_TO_REPO=true
+fi
 
 # Allow some ENV variables to be customized
 if [[ -z "$SLUG" ]]; then
@@ -203,8 +206,13 @@ fi
 svn update
 svn status
 
-echo "➤ Committing files..."
-svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+if $INPUT_PUSH_TO_REPO; then
+	echo "➤ Committing files..."
+	svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+else
+	echo "ℹ︎ Do not push"
+	exit 1
+fi
 
 echo "DONE!"
 
