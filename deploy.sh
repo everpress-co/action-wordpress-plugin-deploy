@@ -149,7 +149,10 @@ else
 	rsync -rc "$TMP_DIR/" trunk/ --delete --delete-excluded
 
 	echo "WHATS INSIDE?"
+	cd trunk
 	ls -a
+	cd "$SVN_DIR"
+
 fi
 
 # Copy dotorg assets to /assets
