@@ -141,6 +141,10 @@ else
 		git add vendor -f
 	fi
 
+	echo "ℹ︎ git status"
+	git status
+	ls -a
+
 
 	cd "$SVN_DIR"
 
