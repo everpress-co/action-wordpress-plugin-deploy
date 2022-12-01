@@ -133,13 +133,14 @@ else
 		git add .gitattributes && git commit -m "Add .gitattributes file"
 	fi
 
-	# This will exclude everything in the .gitattributes file with the export-ignore flag
-	git archive HEAD | tar x --directory="$TMP_DIR"
-
 	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "ℹ︎ include vendor"
 		git add vendor -f
 	fi
+	
+	# This will exclude everything in the .gitattributes file with the export-ignore flag
+	git archive HEAD | tar x --directory="$TMP_DIR"
+
 
 	echo "WHATS INSIDE gitattributes?"
 	cat .gitattributes
