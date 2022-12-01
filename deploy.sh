@@ -133,6 +133,7 @@ else
 		git add .gitattributes && git commit -m "Add .gitattributes file"
 	fi
 
+	# vendor folder should always be included
 	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "ℹ︎ include vendor"
 		git add vendor -f
@@ -217,7 +218,7 @@ echo "X $INPUT_PUSH_TO_REPO"
 
 if [ $INPUT_PUSH_TO_REPO ]; then
 	echo "➤ Committing files..."
-	#svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
+	svn commit -m "Update to version $VERSION from GitHub" --no-auth-cache --non-interactive  --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
 else
 	echo "ℹ︎ Do not push"
 	exit 1
