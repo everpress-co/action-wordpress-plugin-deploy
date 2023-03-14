@@ -147,7 +147,7 @@ else
 	if [ -d "$GITHUB_WORKSPACE/vendor" ]; then
 		echo "ℹ︎ include vendor"
 		git add vendor -f
-		git commit -m "Add vendor folder"
+		git commit -m "Add vendor folder" --allow-empty
 	fi
 
 	# This will exclude everything in the .gitattributes file with the export-ignore flag
