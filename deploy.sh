@@ -150,6 +150,13 @@ else
 		git commit -m "Add vendor folder" --allow-empty
 	fi
 
+	# build folder should always be included
+	if [ -d "$GITHUB_WORKSPACE/build" ]; then
+		echo "ℹ︎ include build"
+		git add build -f
+		git commit -m "Add build folder" --allow-empty
+	fi
+
 	# This will exclude everything in the .gitattributes file with the export-ignore flag
 	git archive HEAD | tar x --directory="$TMP_DIR"
 
